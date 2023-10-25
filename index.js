@@ -34,7 +34,6 @@ const writeFile = (filename, data) => {
 app.get('/', (req, res) => {
     readFile('tasks.json')
         .then((tasks) => {
-            console.log(tasks)
             res.render('index', { tasks: tasks });
         });
 });
@@ -77,11 +76,17 @@ app.get('/delete-task/:taskId', (req, res) => {
     let deleteTaskId = req.params.taskId
     readFile('tasks.json')
         .then(tasks => {
-            tasks.forEach((task, index) => {
+            if (deleteTaskId == "all") {
+                tasks.forEach((task) => {
+                    tasks.splice(task)
+                })
+            } else {
+                tasks.forEach((task, index) => {
                 if (task.id == deleteTaskId) {
                     tasks.splice(index, 1)
                 }
             })
+            }
             data = JSON.stringify(tasks, null, 2)
             writeFile('tasks.json', data)
             res.redirect('/')
