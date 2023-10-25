@@ -34,7 +34,10 @@ const writeFile = (filename, data) => {
 app.get('/', (req, res) => {
     readFile('tasks.json')
         .then((tasks) => {
-            res.render('index', { tasks: tasks });
+            res.render('index', { 
+                tasks: tasks ,
+                error: null
+            });
         });
 });
 
